@@ -13,44 +13,31 @@ const BANNER_KEY = "app:banner";
 
 app.post("/banner", async (req, res) => {
 
-  await redis.set(
-    BANNER_KEY,
-    req.body.message || "Welcome to chai aur redis!"
-  );
+  const {message }= req.body;
 
-  res.json({
-    success: true
-  });
+  await redis.set(BANNER_KEY, message || "Welcome to chai aur redis!");
 
+  res.json({ success: true });
 });
 
 app.get("/banner", async (req, res) => {
 
   const message = await redis.get(BANNER_KEY) || "No banner set.";
-
-  res.json({
-    message
-  });
-
+  res.json({ message });
 });
 
 app.delete("/banner", async (req, res) => {
 
   await redis.del(BANNER_KEY);
 
-  res.json({
-    success: true
-  });
-
+  res.json({ success: true });
 });
 
 app.get("/banner/exists", async (req, res) => {
 
   const exists = await redis.exists(BANNER_KEY);
 
-  res.json({
-    exists: exists
-  });
+  res.json({ exists: exists });
 
 });
 
